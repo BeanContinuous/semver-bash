@@ -28,11 +28,9 @@ _common_setup() {
 }
 
 _create_git_branch() {
-    rand=${RANDOM}
+    rand=$1
     name=$2
 
-    
-    
     cd "${contributor_git_sandbox_repo}"
     
     branch_name=fork/e2e/fa/"${name}-${rand}"
@@ -46,6 +44,43 @@ _create_git_branch() {
     sleep 5
 
     echo $branch_name
+}
+
+_create_pr() {
+    branch_name=$1
+    title=$2
+
+    github_adaptor="${PROJECT_ROOT}"/pkg/adaptors/github
+    github_openapi_client="${github_adaptor}"/openapi/client.sh
+
+    source "${github_openapi_client}"
+    source "${github_adaptor}"/execute_github_api.sh
+
+    cd "${contributor_git_sandbox_repo}"
+
+    # execute_github_api orgsGet org=BeanCloudServices
+    GITHUB_TOKEN=${GITHUB_PAT_CONTRIBUTOR}
+    pr_number=$(execute_github_api pullsCreate owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" head:="\"${GITHUB_REPOSITORY_CONTRIBUTOR}:${branch_name}\"" base:='"main"' title:="\"${title}\"" | jq -r '.number')
+
+    echo "${pr_number}"
+}
+
+_close_pr() {
+    pr_number=$1
+
+    github_adaptor="${PROJECT_ROOT}"/pkg/adaptors/github
+    github_openapi_client="${github_adaptor}"/openapi/client.sh
+
+    source "${github_openapi_client}"
+    source "${github_adaptor}"/execute_github_api.sh
+
+    cd "${contributor_git_sandbox_repo}"
+
+    # execute_github_api orgsGet org=BeanCloudServices
+    GITHUB_TOKEN=${GITHUB_PAT_CONTRIBUTOR}
+
+    execute_github_api pullsUpdate owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" pull_number=${pr_number} state:='"closed"' --dry-run
+
 }
 
 _delete_git_branch() {

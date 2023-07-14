@@ -16,8 +16,8 @@ function pr.get_semver_or_error() {
     pr.has_semver pr_details > /dev/null
     if [[ -v pr_details["semver_type"] ]]; then
         echo "Semver type: ${pr_details["semver_type"]}"
-    else
-        echo "This Pull Request does not contain any semantic version string in title or body."
-        exit 1
+        exit 0
     fi
+    echo "This Pull Request does not contain any semantic version string in title or body."
+    exit 1
 }

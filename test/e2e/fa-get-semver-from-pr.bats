@@ -29,23 +29,23 @@ teardown() {
 }
 
 @test "GIVEN semver string in PR title" {
-    run semver get $pr_number
-    assert_success
-    assert_output --partial "Semver type: ${selected_type}"
-}
-
-@test "GIVEN semver string in PR body" {
-    _update_pr "${pr_number}" "E2E Test PR - ${rand}" "Test body for +semver:${selected_type}"
-    sleep 10 # in order for Github API to completely update PR before run test
-    run semver get $pr_number
+    run bash -c "semver get $pr_number"
     assert_success
     assert_output --partial "Semver type: ${selected_type}"
 }
 
 @test "GIVEN PR does not contain semver string" {
     _update_pr "${pr_number}" "E2E Test PR - ${rand}" "test body"
-    sleep 10 # in order for Github API to completely update PR before run test
-    run semver get $pr_number
+    sleep 20 # in order for Github API to completely update PR before run test
+    run bash -c "semver get $pr_number"
     assert_failure
     assert_output --partial "This Pull Request does not contain any semantic version string in title or body."
+}
+
+@test "GIVEN semver string in PR body" {
+    _update_pr "${pr_number}" "E2E Test PR - ${rand}" "Test body for +semver:${selected_type}"
+    sleep 20 # in order for Github API to completely update PR before run test
+    run bash -c "semver get $pr_number"
+    assert_success
+    assert_output --partial "Semver type: ${selected_type}"
 }

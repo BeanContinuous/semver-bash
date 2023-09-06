@@ -16,8 +16,9 @@ _common_setup() {
     test_secrets="${PROJECT_ROOT}/test/.secrets"
     if [[ -f "${test_secrets}" ]]; then
         source "${test_secrets}"
+            echo -e "\nIf-else in common-setup file test-secrets ${test_secrets}">> /home/dungquack/semver-bash/debug.log
     elif [[ -z "${GITHUB_PAT_OWNER}" ]] || [[ -z "${GITHUB_PAT_CONTRIBUTOR}" ]]; then
-        echo "Please setup Git Tokens in test/.secrets file"
+        echo "Please setup Git Tokens in test/.secrets file">> /home/dungquack/semver-bash/debug.log
         exit 1
     fi
 
@@ -25,6 +26,7 @@ _common_setup() {
     cd "${contributor_git_sandbox_repo}"
     export default_branch=$(git rev-parse --abbrev-ref HEAD)
     cd "${PROJECT_ROOT}"
+    echo "Common_setup funtion PAT ${GITHUB_PAT_OWNER}, contributer repo ${contributor_git_sandbox_repo} ,default branch${default_branch} ">> /home/dungquack/semver-bash/debug.log 
 }
 
 _create_git_branch() {
@@ -44,6 +46,8 @@ _create_git_branch() {
     sleep 5
 
     echo $branch_name
+    echo "Creat_git_branch funtion: contributer repo${contributor_git_sandbox_repo}, brach name ${branch_name} ">> /home/dungquack/semver-bash/debug.log
+
 }
 
 _create_pr() {
@@ -63,6 +67,7 @@ _create_pr() {
     pr_number=$(execute_github_api pullsCreate owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" head:="\"${GITHUB_REPOSITORY_CONTRIBUTOR}:${branch_name}\"" base:='"main"' title:="\"${title}\"" | jq -r '.number')
 
     echo "${pr_number}"
+    echo "Creat_pr funtion pr_number ${pr_number},head:="\"${GITHUB_REPOSITORY_CONTRIBUTOR}:${branch_name}\",pullsCreate owner ${GITHUB_REPOSITORY_OWNER},>> /home/dungquack/semver-bash/debug.log
 }
 
 _update_pr() {
@@ -78,6 +83,8 @@ _update_pr() {
 
     GITHUB_TOKEN=${GITHUB_PAT_CONTRIBUTOR}
     execute_github_api pullsUpdate owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" pull_number="${pr_number}" title:="\"$title\"" body:="\"$body\""
+    echo "Update_pr funtion  pr_number ${pr_number} , github_openapi_client ${github_openapi_client}, Git token ${GITHUB_TOKEN} ">> /home/dungquack/semver-bash/debug.log
+
 }
 
 _close_pr() {
@@ -95,14 +102,14 @@ _close_pr() {
     GITHUB_TOKEN=${GITHUB_PAT_CONTRIBUTOR}
 
     execute_github_api pullsUpdate owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" pull_number="${pr_number}" state:='"closed"'
+    echo "Close_pr funtion  pr_number ${pr_number} , github_openapi_client ${github_openapi_client}, Git token ${GITHUB_TOKEN} ">> /home/dungquack/semver-bash/debug.log
 
 }
 
 _delete_git_branch() {
     branch_name=$1
 
-    echo "dir to cd to is ${contributor_git_sandbox_repo}"
-    echo "branch to delete ${branch_name} and branch to restore is ${default_branch}"
+
 
     cd "${contributor_git_sandbox_repo}"
 
@@ -111,4 +118,5 @@ _delete_git_branch() {
     git checkout "${default_branch}"
     git push origin -d "${branch_name}"
     git branch -D "${branch_name}"
+    echo -e "\vdir to cd to is ${contributor_git_sandbox_repo}(delete_git_branch)\nbranch to delete ${branch_name} and branch to restore is ${default_branch}(delete_git_branch)">> /home/dungquack/semver-bash/debug.log
 }

@@ -28,7 +28,7 @@ unit-tests:
 
 .PHONY: feature-tests
 e2e-tests:
-	./test/bats/bin/bats test/e2e
+	./test/bats/bin/bats --tap test/e2e
 
 .PHONY: tests
 tests: build e2e-tests unit-tests

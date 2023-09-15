@@ -32,3 +32,41 @@ GIVEN semver string in PR body  pr_numbernull
 Close_pr funtion  pr_number null , github_openapi_client /home/dungquack/semver-bash/pkg/adaptors/github/openapi/client.sh, Git token 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 
 dir to cd to is /home/dungquack/semver-bash/test/sandbox/github/contributor(delete_git_branch)
 branch to delete fork/e2e/fa/semver_major-6704 and branch to restore is main(delete_git_branch)
+load.bash bats-support source dir/home/dungquack/semver-bash/test/e2e/../test_helper/bats-support/load.bash
+load.bash bats-assert source dir/home/dungquack/semver-bash/test/e2e/../test_helper/bats-assert/load.bash
+
+If-else in common-setup file test-secrets /home/dungquack/semver-bash/test/.secrets
+Common_setup funtion PAT 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, contributer repo /home/dungquack/semver-bash/test/sandbox/github/contributor ,default branchmain 
+Creat_git_branch funtion: contributer repo/home/dungquack/semver-bash/test/sandbox/github/contributor, brach name fork/e2e/fa/semver_major-29639 
+Creat_pr funtion pr_number 180,head:="PeterBeanBotContributor:fork/e2e/fa/semver_major-29639",pullsCreate owner BeanGitHubSandboxUpstream,
+setup_file funtion  pr_number180
+load.bash bats-support source dir/home/dungquack/semver-bash/test/e2e/../test_helper/bats-support/load.bash
+load.bash bats-assert source dir/home/dungquack/semver-bash/test/e2e/../test_helper/bats-assert/load.bash
+
+If-else in common-setup file test-secrets /home/dungquack/semver-bash/test/.secrets
+Common_setup funtion PAT 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, contributer repo /home/dungquack/semver-bash/test/sandbox/github/contributor ,default branchfork/e2e/fa/semver_major-29639 
+
+GIVEN semver string in PR title  pr_number180
+load.bash bats-support source dir/home/dungquack/semver-bash/test/e2e/../test_helper/bats-support/load.bash
+load.bash bats-assert source dir/home/dungquack/semver-bash/test/e2e/../test_helper/bats-assert/load.bash
+
+If-else in common-setup file test-secrets /home/dungquack/semver-bash/test/.secrets
+Common_setup funtion PAT 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, contributer repo /home/dungquack/semver-bash/test/sandbox/github/contributor ,default branchfork/e2e/fa/semver_major-29639 
+Update_pr funtion  pr_number 180 , github_openapi_client /home/dungquack/semver-bash/pkg/adaptors/github/openapi/client.sh, Git token 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 
+
+GIVEN PR does not contain semver string  pr_number180
+load.bash bats-support source dir/home/dungquack/semver-bash/test/e2e/../test_helper/bats-support/load.bash
+load.bash bats-assert source dir/home/dungquack/semver-bash/test/e2e/../test_helper/bats-assert/load.bash
+
+If-else in common-setup file test-secrets /home/dungquack/semver-bash/test/.secrets
+Common_setup funtion PAT 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, contributer repo /home/dungquack/semver-bash/test/sandbox/github/contributor ,default branchfork/e2e/fa/semver_major-29639 
+Update_pr funtion  pr_number 180 , github_openapi_client /home/dungquack/semver-bash/pkg/adaptors/github/openapi/client.sh, Git token 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 
+
+GIVEN semver string in PR body  pr_number180
+Close_pr funtion  pr_number 180 , github_openapi_client /home/dungquack/semver-bash/pkg/adaptors/github/openapi/client.sh, Git token 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 
+dir to cd to is /home/dungquack/semver-bash/test/sandbox/github/contributor(delete_git_branch)
+branch to delete fork/e2e/fa/semver_major-29639 and branch to restore is main(delete_git_branch)
+load.bash bats-support source dir/home/dungquack/semver-bash/test/test_helper/bats-support/load.bash
+load.bash bats-assert source dir/home/dungquack/semver-bash/test/test_helper/bats-assert/load.bash
+load.bash bats-support source dir/home/dungquack/semver-bash/test/test_helper/bats-support/load.bash
+load.bash bats-assert source dir/home/dungquack/semver-bash/test/test_helper/bats-assert/load.bash

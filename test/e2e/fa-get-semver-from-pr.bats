@@ -11,7 +11,9 @@ setup_file() {
     export selected_type=${semver_types[$rand % ${#semver_types[@]}]}
 
     export pr_number=$(_create_pr "${semver_major_branch}" "E2E Test PR for +semver:${selected_type} - ${rand}")
+    echo "setup_file funtion  pr_number${pr_number}" >> /home/dungquack/semver-bash/debug.log
 }
+
 
 setup() {
     load "../test_helper/common-setup"
@@ -28,24 +30,40 @@ teardown() {
     echo ""
 }
 
-@test "GIVEN semver string in PR title" {
-    run bash -c "semver get $pr_number"
+@test "GIVEN semver string in PR title" { 
+
+    #_update_pr "${pr_number}" "E2E Test PR for +semver:${selected_type} - ${rand}" "test body"
+    echo "${pr_number} ___ ${semver_major_branch} ------- E2E Test PR for +semver:${selected_type} - ${rand}" 
+    run bash -c "semver get $pr_number" 
+    echo -e "\nGIVEN semver string in PR title  pr_number${pr_number}" >> /home/dungquack/semver-bash/debug.log
     assert_success
-    assert_output --partial "Semver type: ${selected_type}"
+    assert_output --partial "Semver type: ${selected_type}"   
+    
 }
 
+
+
 @test "GIVEN PR does not contain semver string" {
+
+    echo "${pr_number} ___ ${semver_major_branch} ------- E2E Test PR for +semver:${selected_type} - ${rand}" 
     _update_pr "${pr_number}" "E2E Test PR - ${rand}" "test body"
     sleep 20 # in order for Github API to completely update PR before run test
-    run bash -c "semver get $pr_number"
+    run bash -c "semver get $pr_number" 
+    echo -e "\nGIVEN PR does not contain semver string  pr_number${pr_number}" >> /home/dungquack/semver-bash/debug.log
     assert_failure
-    assert_output --partial "This Pull Request does not contain any semantic version string in title or body."
+    assert_output --partial "This Pull Request does not contain any semantic version string in title or body." 
+    
 }
 
 @test "GIVEN semver string in PR body" {
+
+    echo "${pr_number} ___ ${semver_major_branch} ------- E2E Test PR for +semver:${selected_type} - ${rand}" 
     _update_pr "${pr_number}" "E2E Test PR - ${rand}" "Test body for +semver:${selected_type}"
     sleep 20 # in order for Github API to completely update PR before run test
-    run bash -c "semver get $pr_number"
+    run bash -c "semver get $pr_number" 
+    echo -e "\nGIVEN semver string in PR body  pr_number${pr_number}" >> /home/dungquack/semver-bash/debug.log
     assert_success
-    assert_output --partial "Semver type: ${selected_type}"
+    assert_output --partial "Semver type: ${selected_type}" 
+    
 }
+

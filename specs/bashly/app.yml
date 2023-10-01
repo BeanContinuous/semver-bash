@@ -1,28 +1,23 @@
 name: semver
 help: Semantic Versioning Application
 version: v0.1.0-alpha
-
 environment_variables:
-- name: git_platform
-  help: The git platform on which this app runs, possible values are GitHub and GitLab
-
+  - name: git_platform
+    help: The git platform on which this app runs, possible values are GitHub and GitLab
 commands:
-- name: get
-  help: Get the version number generated from a source such as a PR or the last version number
-  args:
-  - name: source_value
-    help: Pull/Merge Request number or last version number
-    required: TRUE
-
-  flags:
-  - long: --source-type
-    short: -t
-    arg: source_type
-    default: pr
-    help: "To specify if the source is a GitHub Pull Request or the last version number - Default: pr"
-  dependencies:
-    git:
-    jq:
-    curl:
-
-
+  - name: get
+    help: Get the version number generated from a source such as a PR or the last version number
+    args:
+      - name: source_value
+        help: Pull/Merge Request number or last version number
+        required: TRUE
+    flags:
+      - long: --source-type
+        short: -t
+        arg: source_type
+        default: pr
+        help: "To specify if the source is a GitHub Pull Request or the last version number - Default: pr"
+    dependencies:
+      git:
+      jq:
+      curl:

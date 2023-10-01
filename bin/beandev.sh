@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
+# Print the section
+
 PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )"
 cd "${PROJECT_ROOT}"
 
 
 # shellcheck source=bin/config.sh
 source bin/config.sh
+source bin/release.sh
 
 case $1 in
     init)
@@ -123,7 +126,9 @@ case $1 in
         # done
 
     ;;
-
+    release)
+       release $1 $2
+    ;;
     *)
         exit 0
     ;;
